@@ -1,0 +1,3 @@
+libregutils is regex utilities library written in C, providing functions for matching, replacing (with added support for backreferences), splitting and escaping regular expressions. libregutils is built on top of, and requires a POSIX compatible regex library to be installed on your system (usually installed by default on UNIX systems).
+
+See examples for a demonstration of usage
