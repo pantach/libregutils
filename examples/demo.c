@@ -59,6 +59,10 @@ void match_demo(const char* subject)
 
 	/* Before doing anything we need to initialize our handle */
 	rm = preg_init();
+	if (!rm) {
+		printf("Memory allocation failure\n");
+		exit(EXIT_FAILURE);
+	}
 
 	/* With preg_setopt you can set various options before performing a regex
 	 * match. Supported options are PREG_CFLAGS, PREG_MIN and PREG_LIMIT.  */
@@ -84,8 +88,6 @@ void match_demo(const char* subject)
 	 * expression (BRE) match instead of the default ERE, you would call the
 	 * following: */
 	//preg_delopt(rm, PREG_CFLAGS, REG_EXTENDED);
-	/* The function above is provided for convienience only. You could perfom
-	 * the same action by calling preg_setopt with ~REG_EXTENDED */
 
 	/* Now that everything is set we can perform the regex match */
 	err = preg_match(rm, subject, "c([[:alpha:]]+)e");
@@ -130,6 +132,10 @@ void replace_demo(const char* subject)
 	int err;
 
 	rm = preg_init();
+	if (!rm) {
+		printf("Memory allocation failure\n");
+		exit(EXIT_FAILURE);
+	}
 
 	/* preg_replace allows you to use backreferences in the replacement string.
 	 * Backreferences are denoted by $[0-9], where $0 refers to the whole
@@ -156,6 +162,10 @@ void split_demo(const char* subject)
 	int i;
 
 	rm = preg_init();
+	if (!rm) {
+		printf("Memory allocation failure\n");
+		exit(EXIT_FAILURE);
+	}
 
 	/* This is pretty straight-forward if you understood the previous examples
 	 * */
