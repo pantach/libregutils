@@ -56,8 +56,8 @@ struct Preg_err {
 } internal_errors[] = {
 	{ PREG_INTERNAL_ERR, PREG_NOACTION, "No action is performed" },
 	{ PREG_INTERNAL_ERR, PREG_MEMFAIL,  "Failed to allocate memory" },
-	{ PREG_INTERNAL_ERR, PREG_INVMIN,   "Min should be greater than 1" },
-	{ PREG_INTERNAL_ERR, PREG_INVLIMIT, "Limit should be greater than -1" },
+	{ PREG_INTERNAL_ERR, PREG_INVMIN,   "Min should be zero or positive" },
+	{ PREG_INTERNAL_ERR, PREG_INVLIMIT, "Limit should be greater than -2" },
 	{ PREG_INTERDTL_ERR, PREG_INVBREF,  "Invalid backreference number" }
 };
 
@@ -96,6 +96,7 @@ struct Preg {
 	size_t offset_size;     // offset's size
 	size_t matc;            // Match count
 	size_t subc;            // Number of subexpressions in the regex pattern
+	int uflags;             // libregutils' flags
 	int cflags;             // Regcomp's flags
 	int min;                // The number of the minimum match to be returned
 	int limit;              // The max number of matches to be returned
@@ -177,7 +178,10 @@ inline regoff_t preg_eo(Preg* rm, int nmatch, int nsub)
 
 inline char* preg_getmatch(Preg* rm, int nmatch, int nsub)
 {
-	return rm->matches.match[nmatch].sub[nsub];
+	if (rm->matches.match)
+		return rm->matches.match[nmatch].sub[nsub];
+	else
+		return NULL;
 }
 
 inline size_t preg_matchlen(Preg* rm, int nmatch, int nsub)
@@ -273,8 +277,11 @@ void preg_setopt(Preg* rm, Preg_opt opt, int value)
 	case PREG_CFLAGS:
 		rm->cflags |= value;
 		break;
+	case PREG_UFLAGS:
+		rm->uflags |= value;
+		break;
 	case PREG_MIN:
-		rm->min = value -1;
+		rm->min = value;
 		break;
 	case PREG_LIMIT:
 		rm->limit = value;
@@ -286,6 +293,8 @@ void preg_delopt(Preg* rm, Preg_opt opt, int value)
 	switch (opt) {
 	case PREG_CFLAGS:
 		rm->cflags &= ~value;
+	case PREG_UFLAGS:
+		rm->uflags &= ~value;
 	default:
 		break;
 	}
@@ -462,8 +471,8 @@ int preg_offset(Preg* rm, const char* subject, const char* pattern)
 	}
 
 	// Find and discard matches until reaching the minimum accepted match
-	for (i = 0; !(err = regexec(&rm->comp, &subject[subject_ro], rm->subc +1,
-	            match, eflags)) && i < rm->min; ++i) {
+	for (i = 0; i < rm->min && !(err = regexec(&rm->comp, &subject[subject_ro],
+	            rm->subc +1, match, eflags)); ++i) {
 
 		subject_ro += match->rm_eo;
 
@@ -565,16 +574,23 @@ int preg_match(Preg* rm, const char* subject, const char* pattern)
 	if ((err = preg_offset(rm, subject, pattern)))
 		goto end;
 
+	// Does the user want the matched strings?
+	if (rm->uflags & PREG_NOSTRINGS)
+		goto end;
+
+	// Calculate the size of the relevant structures
 	match_size = preg_matc(rm) * sizeof(Preg_sub);
 	sub_size  = (preg_subc(rm) +1) * sizeof(char*);
 
 	memsize += match_size;
 	memsize += preg_matc(rm) * sub_size;
 
+	// Calculate the total length of the matched strings
 	for (i = 0; i < preg_matc(rm); ++i)
 		for (j = 0; j <= preg_subc(rm); ++j)
 			memsize += preg_matchlen(rm, i, j) +1;
 
+	// One-time allocation
 	if ((mem = mem_init(rm, memsize)) == NULL) {
 		err = PREG_MEMFAIL;
 		goto end;
@@ -582,6 +598,7 @@ int preg_match(Preg* rm, const char* subject, const char* pattern)
 
 	match = mem_alloc(&mem, match_size);
 
+	// Copy the matched strings to the appropriate structures
 	for (i = 0; i < preg_matc(rm); ++i) {
 		match[i].sub = mem_alloc(&mem, sub_size);
 
@@ -692,6 +709,11 @@ int preg_replace(Preg* rm, const char* subject, const char* pattern,
 
 	// If the replacement string includes backreferences
 	if (bref.n > 0) {
+
+		// PREG_NOSTRINGS will cause conflicts here
+		if (rm->uflags & PREG_NOSTRINGS)
+			rm->uflags &= ~PREG_NOSTRINGS;
+
 		// We need the matched strings for applying them to the backreferences
 		// in the replacement string
 		if ((err = preg_match(rm, subject, pattern)))

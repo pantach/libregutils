@@ -31,17 +31,22 @@
 typedef enum Preg_errcode {
 	PREG_NOACTION = PREG_ERRCODE_START, // No action is performed
 	PREG_MEMFAIL,                       // Memory allocation failure
-	PREG_INVMIN,                        // Min should be greater than 0
-	PREG_INVLIMIT,                      // Limit should be greater than -1
+	PREG_INVMIN,                        // Min should be zero or positive
+	PREG_INVLIMIT,                      // Limit should be greater than -2
 	PREG_INVBREF,                       // Invalid backreference number
 	PREG_ERRCODE_END                    // Shall always be last
 } Preg_errcode;
 
 typedef enum Preg_opt {
 	PREG_CFLAGS = 0,
+	PREG_UFLAGS,
 	PREG_MIN,
 	PREG_LIMIT
 } Preg_opt;
+
+typedef enum Preg_uflags {
+	PREG_NOSTRINGS = 1,
+} Preg_uflags;
 
 typedef enum Preg_notation {
 	PREG_ERE = 0,
