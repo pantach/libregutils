@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([regutils], [0.0.0], [https://github.com/pantach/libregutils])
+AC_INIT([regutils], [1.0.0], [https://github.com/pantach/libregutils])
 AC_CONFIG_SRCDIR([src/regutils.c])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 LT_INIT

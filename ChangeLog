@@ -1,0 +1,6 @@
+libregutils 1.0.0
+
+* Added a PREG_UFLAGS option for preg_setopt() along with the PREG_NOSTRINGS
+  flag
+* Renamed PREG_INV* error codes to PREG_BAD* in order to establish a semantic
+  correlation with the POSIX-defined error codes.

@@ -56,9 +56,9 @@ struct Preg_err {
 } internal_errors[] = {
 	{ PREG_INTERNAL_ERR, PREG_NOACTION, "No action is performed" },
 	{ PREG_INTERNAL_ERR, PREG_MEMFAIL,  "Failed to allocate memory" },
-	{ PREG_INTERNAL_ERR, PREG_INVMIN,   "Min should be zero or positive" },
-	{ PREG_INTERNAL_ERR, PREG_INVLIMIT, "Limit should be greater than -2" },
-	{ PREG_INTERDTL_ERR, PREG_INVBREF,  "Invalid backreference number" }
+	{ PREG_INTERNAL_ERR, PREG_BADMIN,   "Min should be zero or positive" },
+	{ PREG_INTERNAL_ERR, PREG_BADLIMIT, "Limit should be greater than -2" },
+	{ PREG_INTERDTL_ERR, PREG_BADBREF,  "Invalid backreference number" }
 };
 
 typedef struct {
@@ -303,9 +303,9 @@ void preg_delopt(Preg* rm, Preg_opt opt, int value)
 int preg_checkopt(Preg* rm)
 {
 	if (rm->min < 0)
-		return PREG_INVMIN;
+		return PREG_BADMIN;
 	else if (rm->limit < -1)
-		return PREG_INVLIMIT;
+		return PREG_BADLIMIT;
 	else
 		return 0;
 }
@@ -723,7 +723,7 @@ int preg_replace(Preg* rm, const char* subject, const char* pattern,
 		for (i = 0; i < bref.n; i++) {
 			if (bref.entry[i].no > preg_subc(rm)) {
 				snprintf(errdtls, MAX_BREF_DIGITS +1, "%d", bref.entry[i].no);
-				err = PREG_INVBREF;
+				err = PREG_BADBREF;
 				goto end;
 			}
 		}

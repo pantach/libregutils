@@ -31,9 +31,9 @@
 typedef enum Preg_errcode {
 	PREG_NOACTION = PREG_ERRCODE_START, // No action is performed
 	PREG_MEMFAIL,                       // Memory allocation failure
-	PREG_INVMIN,                        // Min should be zero or positive
-	PREG_INVLIMIT,                      // Limit should be greater than -2
-	PREG_INVBREF,                       // Invalid backreference number
+	PREG_BADMIN,                        // Min should be zero or positive
+	PREG_BADLIMIT,                      // Limit should be greater than -2
+	PREG_BADBREF,                       // Invalid backreference number
 	PREG_ERRCODE_END                    // Shall always be last
 } Preg_errcode;
 
