@@ -80,7 +80,7 @@ void match_demo(const char* subject)
 	 * with PREG_LIMIT the maximum number of matches to be returned. With the
 	 * following options I instruct regutils to ignore the first match and
 	 * return a maximum of ten matches */
-	//preg_setopt(rm, PREG_MIN, 2);
+	//preg_setopt(rm, PREG_MIN, 1);
 	//preg_setopt(rm, PREG_LIMIT, 10);
 
 	/* With preg_delopt you can reset options. For now, only the PREG_CFLAGS
