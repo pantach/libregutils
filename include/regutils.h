@@ -58,34 +58,39 @@ typedef struct Preg Preg;
 /* Common functions */
 
 Preg* preg_init(void);
-void preg_free(Preg* rm);
+void  preg_free(Preg* rm);
+
 void preg_setopt(Preg* rm, Preg_opt opt, int value);
 void preg_delopt(Preg* rm, Preg_opt opt, int value);
+
 size_t preg_matc(Preg* rm);
 size_t preg_subc(Preg* rm);
+
 size_t preg_matchlen(Preg* rm, int nmatch, int nsub);
+
 regoff_t preg_so(Preg* rm, int nmatch, int nsub);
 regoff_t preg_eo(Preg* rm, int nmatch, int nsub);
-char* preg_errmsg(Preg* rm);
-int preg_errcode(Preg* rm);
+
+char* preg_errmsg (Preg* rm);
+int   preg_errcode(Preg* rm);
 
 /* Match functions */
 
-int	preg_match(Preg* rm, const char* subject, const char* pattern);
+int   preg_match   (Preg* rm, const char* subject, const char* pattern);
 char* preg_getmatch(Preg* rm, int nmatch, int nsub);
 
 /* Replace functions */
 
-int	preg_replace(Preg* rm, const char* subject, const char* pattern,
-	             const char *rep);
-char* preg_getrep(Preg* rm);
-size_t preg_replen(Preg* rm);
+int    preg_replace(Preg* rm, const char* subject, const char* pattern,
+                    const char *rep);
+char*  preg_getrep (Preg* rm);
+size_t preg_replen (Preg* rm);
 
 /* Split function */
 
-int preg_split(Preg* rm, const char* subject, const char* pattern);
-int preg_splitc(Preg* rm);
-char* preg_getsplit(Preg* rm, int nmatch);
+int    preg_split   (Preg* rm, const char* subject, const char* pattern);
+int    preg_splitc  (Preg* rm);
+char*  preg_getsplit(Preg* rm, int nmatch);
 size_t preg_splitlen(Preg* rm, int nmatch);
 
 /* Miscellaneous */
