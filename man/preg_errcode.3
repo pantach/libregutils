@@ -1,0 +1,56 @@
+.TH PREG_ERRCODE 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_errmsg, preg_errcode \- libregutils error reporting functions
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "char* preg_errmsg  (Preg *" reg )
+.BI "int   preg_errcode (Preg *" reg )
+.fi
+.SH DESCRIPTION
+These functions are expected to be called after a successful termination of
+.BR preg_match (),
+.BR preg_replace (),
+or
+.BR preg_split ()
+and should be passed the relevant
+.I reg
+structure.
+.SH RETURN VALUE
+.BR preg_errmsg ()
+returns a human-readable error message associated with the given
+.IR reg
+structure.
+.PP
+.BR preg_errcode ()
+returns an error code associated with the given
+.IR reg
+structure.
+.SH ERRORS
+The following error codes are defined by libregutils and are possible return
+values of
+.BR preg_errcode ():
+.TP
+.B PREG_MEMFAIL
+Memory allocation failure
+.TP
+.B PREG_BADMIN
+Min should be greater or equal to 0
+.TP
+.B PREG_BADLIMIT
+Limit should be greater or equal to -1
+.TP
+.B PREG_BADBREF
+Invalid backreference number
+.PP
+In addition to these,
+.BR preg_errcode ()
+may return any of the POSIX-defined error codes that are documented in
+.BR regex (3).
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_match (3),
+.BR preg_replace (3),
+.BR preg_split (3)
+

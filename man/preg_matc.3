@@ -1,0 +1,32 @@
+.TH PREG_MATC 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_matc, preg_subc \- number of matches and parenthesized subexpressions
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "size_t preg_matc(Preg *" reg )
+.BI "size_t preg_subc(Preg *" reg )
+.fi
+.SH DESCRIPTION
+These functions are expected to be called after a successful termination of
+.BR preg_match (),
+.BR preg_replace (),
+or
+.BR preg_split ()
+and should be passed the relevant
+.I reg
+structure.
+.SH RETURN VALUE
+.BR preg_matc ()
+returns the number of matches in
+.IR reg .
+.PP
+.BR preg_subc ()
+returns the number of parenthesized subexpressions specified in
+.IR reg .
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_match (3),
+.BR preg_replace (3),
+.BR preg_split (3)

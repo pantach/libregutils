@@ -1,0 +1,94 @@
+.TH PREG_SETOPT 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_setopt, preg_delopt \- set/delete regex options
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "void preg_setopt(Preg *" reg ", Preg_opt " opt ", int " val )
+.BI "void preg_detopt(Preg *" reg ", Preg_opt " opt ", int " val )
+.SH DESCRIPTION
+.fi
+.PP
+With
+.BR preg_setopt ()
+you can set various options to the
+.I reg
+structure, before performing a regex action.
+.I reg
+should be initialized with
+.BR preg_init (3)
+before passed to
+.BR preg_setopt ().
+.PP
+.I opt
+may be one of the following:
+.TP
+.B PREG_CFLAGS
+This option sets various compilation flags for the regex pattern.
+.IR val 's
+are passed directly to the regex compiler (see
+.BR regcomp (3)).
+Supported values are at least the following:
+.BR REG_EXTENDED , " REG_ICASE " and " REG_NEWLINE".
+A bitwise-or of two or more flags is also valid.
+.B REG_EXTENDED
+is activated by default.
+For a more thorough
+explanation of their utility see
+.BR regex (3).
+Please note that
+.B REG_NOSUB
+is also defined by POSIX, but not supported and ignored by libregutils.
+However, the
+.B PREG_NOSTRINGS
+flag of the
+.B PREG_UFLAGS
+option provides a similar feature.
+.TP
+.B PREG_UFLAGS
+Combined with a
+.I val
+of
+.B PREG_NOSTRINGS
+, this option will cause
+.BR preg_match (3)
+to omit storing the matched strings.
+As a result,
+.BR preg_getmatch (3)
+will always return NULL.
+.TP
+.B PREG_MIN
+This option specifies the minimum match to be returned, with 0 being the first.
+Any preceding matches are skipped.
+Its default value is 0.
+.TP
+.B PREG_LIMIT
+This option specifies the maximum number of matches to be returned.
+Its default value is \-1 which stands for "unlimited".
+.PP
+.BR preg_detopt ()
+deletes an option set by
+.BR preg_setopt ()
+or set by default. The semantics are the same with
+.BR preg_setopt ()
+, however only the
+.B PREG_CFLAGS
+and
+.B PREG_UFLAGS
+options are supported.
+Any other value is simply ignored.
+For example, to perform a basic (BRE) regular expression match, one has
+to call:
+.IP
+.BI preg_delopt( reg ", PREG_CFLAGS, REG_EXTENDED)
+.SH RETURN VALUE
+.BR preg_setopt()
+and
+.BR preg_delopt()
+return no value.
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_match (3),
+.BR preg_replace (3),
+.BR preg_split (3)

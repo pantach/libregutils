@@ -1,0 +1,50 @@
+.TH PREG_EO 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_so, preg_eo \- get the start/end offsets of the specified regex match
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "regoff_t preg_so(Preg *" reg ", int " nmatch ", int " nsub )
+.BI "regoff_t preg_eo(Preg *" reg ", int " nmatch ", int " nsub )
+.fi
+.SH DESCRIPTION
+.BR preg_so ()
+and
+.BR preg_eo ()
+return the start and end offsets of the specified match,
+denoted by
+.IR nmatch ,
+the number of the match, and
+.IR nsub ,
+the number of the subexpression.
+.PP
+These functions should only be called after a successful termination of
+.BR preg_match (),
+.BR preg_replace (),
+or
+.BR preg_split ()
+and should be passed the relevant
+.I reg
+structure.
+Doing otherwise may cause undefined behavior, which may also be caused by
+specifying
+.I nmatch
+and
+.I nsub
+values that are out of bounds.
+.PP
+.B regoff_t
+is a signed integer type.
+For a more detailed explanation about it you may try checking
+.BR regex (3).
+.SH RETURN VALUE
+The start and end offsets, respectively, of the specified match, or \-1 in case
+the subexpression denoted by
+.IR nsub ,
+has not been captured successfully.
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_match (3),
+.BR preg_replace (3),
+.BR preg_split (3)

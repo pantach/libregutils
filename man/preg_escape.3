@@ -1,0 +1,45 @@
+.TH PREG_ESCAPE 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_escape \- libregutils escaping function
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "char* preg_escape(const char *" str ", Preg_notation " not ", size_t " \
+len )
+.fi
+.SH DESCRIPTION
+.PP
+.BR preg_escape ()
+escapes the string pointed by
+.I str
+using the rules of the regex notation denoted by
+.IR not .
+Valid values for
+.I not
+are
+.BR PREG_ERE ,
+which denotes "Extended regular expressions", and
+.BR PREG_BRE ,
+which denotes "Basic regular expressions".
+If
+.I len
+is set to \-1,
+.BR preg_escape ()
+expects a null-terminated string.
+In case the user wants to pass a non null-terminated string, the value of
+.I len
+should zero or positive, and
+.I str
+is expected to point to an area of at least
+.I len
+bytes.
+.SH RETURN VALUE
+On success the escaped string is returned.
+A NULL pointer is returned in case of memory
+allocation failure.
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_match (3),
+.BR preg_split (3),
+.BR preg_escape (3)

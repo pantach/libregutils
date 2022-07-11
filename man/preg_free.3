@@ -1,0 +1,41 @@
+.TH PREG_FREE 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_init, preg_free \- initialize/free a Preg structure
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "Preg* preg_init(void)"
+.BI "void  preg_free(Preg *" reg )
+.SH DESCRIPTION
+.fi
+.PP
+.BR preg_init ()
+initializes a
+.B Preg
+structure.
+You can then proceed to use this structure with
+.BR preg_match "(3), " preg_replace "(3) or " preg_split "(3)."
+.PP
+.BR preg_free ()
+frees a previously initialized
+.B Preg
+structure pointed by
+.IR reg .
+If
+.I reg
+is NULL no action is performed.
+.SH RETURN VALUE
+.PP
+.BR preg_init ()
+returns a pointer to the newly allocated
+.B Preg
+structure or NULL in case of memory allocation failure.
+.PP
+.BR preg_free ()
+returns no value.
+.SH SEE ALSO
+.BR preg_match (3),
+.BR preg_replace (3),
+.BR preg_split (3),
+.BR preg_escape (3)

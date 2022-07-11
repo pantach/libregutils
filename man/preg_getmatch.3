@@ -1,0 +1,143 @@
+.TH PREG_GETMATCH 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_match, preg_getmatch, preg_matchlen \- libregutils matching functions
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "int    preg_match(Preg *" reg ", const char *" subject ", const char *" \
+pattern )
+.BI "char*  preg_getmatch(Preg *" reg ", int " nmatch ", int " nsub )
+.BI "size_t preg_matchlen(Preg *" reg ", int " nmatch ", int " nsub )
+.fi
+.SH DESCRIPTION
+.PP
+.BR preg_match ()
+performs a regex match on the
+.I subject
+string using the specified regex
+.IR pattern .
+Before passed to
+.BR preg_match (),
+.I reg
+should be initialized with
+.BR preg_init (3).
+You can control various options about the execution of the match, by calling
+.BR preg_setopt (3)
+in advance.
+.PP
+After a successful match is performed, you can iterate over the results using
+.BR preg_getmatch ().
+.I nmatch
+specifies the nth match, while
+.I nsub
+specifies the nth parenthesized subexpression, with 0 being the whole pattern.
+A parenthesized subexpression in
+.I pattern
+may or may not have been successfully matched.
+Undefined behavior may occur, if either
+.BR preg_getmatch ()
+is called without a prior successful termination of
+.BR preg_match (),
+or the specified
+.I nmatch
+or
+.I nsub
+value is out of bounds.
+.PP
+.BR preg_matchlen ()
+has similar semantics with
+.BR preg_getmatch ()
+although,
+.BR preg_matchlen ()
+may be also called after a successful termination of either
+.BR preg_replace (3)
+or
+.BR preg_split (3).
+In the former case, it returns the length of the to-be-replaced substring,
+while in the latter, it returns the length of the matched seperators.
+.SH RETURN VALUE
+.PP
+.BR preg_match ()
+returns 0 in case of a successful match or an error code on failure.
+.PP
+.BR preg_getmatch ()
+returns a string with the specified match.
+If the specified
+.I nsub
+has not been matched, an empty string is returned.
+In case the
+.B PREG_NOSTRINGS
+flag of the
+.B PREG_UFLAGS
+option has been set with
+.BR preg_setopt (3),
+it always returns NULL.
+.PP
+.BR preg_matchlen ()
+returns the length of the specified match.
+.SH ERRORS
+.PP
+The following error codes are defined by libregutils for
+.BR preg_match ():
+.TP
+.B PREG_MEMFAIL
+Memory allocation failure
+.TP
+.B PREG_BADMIN
+Min should be greater or equal to 0
+.TP
+.B PREG_BADLIMIT
+Limit should be greater or equal to -1
+.PP
+In addition to these,
+.BR preg_match ()
+may return any of the POSIX-defined error codes that are documented in
+.BR regex (3).
+.SH EXAMPLE
+.EX
+#include <stdio.h>
+#include <stdlib.h>
+#include <regutils.h>
+
+int main(void)
+{
+    Preg* reg;
+    char* subject = "The date of the Epoch: 1-Jan-1970 00:00:00\\n"
+                    "The date of the Epochalypse: 19-Jan-2038 03:14:07";
+    char* pattern = "[0-9]{2}:[0-9]{2}:[0-9]{2}";
+    int exit_code = EXIT_FAILURE;
+    int err;
+    int i, j;
+
+    reg = preg_init();
+    if (reg) {
+        err = preg_match(reg, subject, pattern);
+
+        if (err)
+            printf("An unexpected error occurred: %s\\n", preg_errmsg(reg));
+        else {
+            for (i = 0; i < preg_matc(reg); i++)
+                // Always use '<=' if you are iterating over submatches!
+                for (j = 0; j <= preg_subc(reg); j++)
+                    printf("Captured time: %s\\n", preg_getmatch(reg, i, j));
+
+            exit_code = EXIT_SUCCESS;
+        }
+
+        preg_free(reg);
+    }
+
+    exit(exit_code);
+}
+.EE
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_matc (3),
+.BR preg_subc (3),
+.BR preg_so (3),
+.BR preg_errmsg (3),
+.BR preg_setopt (3),
+.BR preg_replace (3),
+.BR preg_split (3),
+.BR preg_escape (3)

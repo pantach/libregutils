@@ -1,0 +1,97 @@
+.TH PREG_SPLITLEN 3 2022-07-09 libregutils "libregutils manual"
+.SH NAME
+preg_split, preg_splitc, preg_getsplit, preg_splitlen \-
+libregutils split functions
+.SH SYNOPSIS
+.nf
+.B #include <regutils.h>
+.PP
+.BI "int    preg_split    (Preg *" reg ", const char *" subject ", const char *"\
+pattern )
+.BI "int    preg_splitc   (Preg *" reg )
+.BI "char*  preg_getsplit (Preg *" reg ", int " nmatch )
+.BI "size_t preg_splitlen (Preg *" reg ", int " nmatch )
+.fi
+.SH DESCRIPTION.PP
+.BR preg_split ()
+performs a regex split on the
+.I subject
+string using the specified regex
+.IR pattern
+as a seperator.
+Before passed to
+.BR preg_split (),
+.I reg
+should be initialized with
+.BR preg_init (3).
+You can control various options about the execution of the split, by calling
+.BR preg_setopt (3)
+in advance.
+.PP
+After a successful split is performed, you can iterate over the results using
+.BR preg_getsplit (),
+where
+.I nmatch
+specifies the nth split string (token).
+.BR preg_splitc ()
+returns the total number of tokens, while
+.BR preg_splitlen ()
+returns the length of the specified token.
+.SH ERRORS
+.PP
+The following error codes are defined by libregutils for
+.BR preg_match ():
+.TP
+.B PREG_MEMFAIL
+Memory allocation failure
+.TP
+.B PREG_BADMIN
+Min should be greater or equal to 0
+.TP
+.B PREG_BADLIMIT
+Limit should be greater or equal to -1
+.PP
+In addition to these,
+.BR preg_match ()
+may return any of the POSIX-defined error codes that are documented in
+.BR regex (3).
+.SH EXAMPLE
+.EX
+#include <stdio.h>
+#include <stdlib.h>
+#include <regutils.h>
+
+int main(void)
+{
+    const char* subject = "One two-three/four - five";
+    Preg* reg;
+    int err;
+    int exit_code = EXIT_FAILURE;
+    int i;
+
+    reg = preg_init();
+    if (reg) {
+        err = preg_split(reg, subject, "[-/ ]");
+        if (err)
+            printf("An error occurred: %s\\n", preg_errmsg(reg));
+        else {
+            printf("The split strings are:\\n");
+            for (i = 0; i < preg_splitc(reg); i++)
+                printf("%s\\n", preg_getsplit(reg, i));
+
+            exit_code = EXIT_SUCCESS;
+        }
+
+        preg_free(reg);
+    }
+
+    exit(exit_code);
+}
+.EE
+.SH SEE ALSO
+.BR preg_init (3),
+.BR preg_errmsg (3),
+.BR preg_setopt (3),
+.BR preg_match (3),
+.BR preg_replace (3)
+.BR preg_escape (3)
