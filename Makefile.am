@@ -13,3 +13,4 @@ man/preg_errmsg.3 man/preg_escape.3 man/preg_getmatch.3 man/preg_getrep.3 \
 man/preg_getsplit.3 man/preg_matc.3 man/preg_match.3 man/preg_matchlen.3 \
 man/preg_replace.3 man/preg_replen.3 man/preg_split.3 man/preg_splitc.3 \
 man/preg_splitlen.3 man/preg_subc.3
+EXTRA_DIST = LICENSE README.md
