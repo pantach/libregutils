@@ -31,13 +31,19 @@ After a successful match is performed, you can iterate over the results using
 .I nmatch
 specifies the nth match, while
 .I nsub
-specifies the nth parenthesized subexpression, with 0 being the whole pattern.
-A parenthesized subexpression in
+specifies the nth parenthesized subexpression in
 .I pattern
-may or may not have been successfully matched.
-Undefined behavior may occur, if either
+, with 0 being the whole pattern.
+A parenthesized subexpression may or may not be successfully matched.
+The behavior is undefined, if
 .BR preg_getmatch ()
 is called without a prior successful termination of
+.BR preg_match (),
+or the
+.B PREG_NOSTRINGS
+flag (see
+.BR preg_setopt (3))
+was set before calling
 .BR preg_match (),
 or the specified
 .I nmatch
@@ -66,13 +72,6 @@ returns a string with the specified match.
 If the specified
 .I nsub
 has not been matched, an empty string is returned.
-In case the
-.B PREG_NOSTRINGS
-flag of the
-.B PREG_UFLAGS
-option has been set with
-.BR preg_setopt (3),
-it always returns NULL.
 .PP
 .BR preg_matchlen ()
 returns the length of the specified match.

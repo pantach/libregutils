@@ -51,12 +51,18 @@ Combined with a
 .I val
 of
 .B PREG_NOSTRINGS
-, this option will cause
+, this option instructs
 .BR preg_match (3)
 to omit storing the matched strings.
-As a result,
+As a result, any call to
 .BR preg_getmatch (3)
-will always return NULL.
+will result in undefined behaviour.
+Calls to
+.BR preg_so (3),
+.BR preg_eo (3)
+or
+.BR preg_matchlen (3)
+are not affected by this flag.
 .TP
 .B PREG_MIN
 This option specifies the minimum match to be returned, with 0 being the first.

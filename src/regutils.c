@@ -178,10 +178,7 @@ inline regoff_t preg_eo(Preg* rm, int nmatch, int nsub)
 
 inline char* preg_getmatch(Preg* rm, int nmatch, int nsub)
 {
-	if (rm->matches.match)
-		return rm->matches.match[nmatch].sub[nsub];
-	else
-		return NULL;
+	return rm->matches.match[nmatch].sub[nsub];
 }
 
 inline size_t preg_matchlen(Preg* rm, int nmatch, int nsub)
