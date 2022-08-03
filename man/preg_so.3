@@ -5,8 +5,8 @@ preg_so, preg_eo \- start and end offsets of a given regex match
 .nf
 .B #include <regutils.h>
 .PP
-.BI "regoff_t preg_so(Preg *" reg ", int " nmatch ", int " nsub )
-.BI "regoff_t preg_eo(Preg *" reg ", int " nmatch ", int " nsub )
+.BI "regoff_t preg_so(const Preg *" reg ", int " nmatch ", int " nsub )
+.BI "regoff_t preg_eo(const Preg *" reg ", int " nmatch ", int " nsub )
 .fi
 .SH DESCRIPTION
 .BR preg_so ()

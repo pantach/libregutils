@@ -5,13 +5,13 @@ preg_replace, preg_getrep, preg_replen \- libregutils substitution functions
 .nf
 .B #include <regutils.h>
 .PP
-.BI "int    preg_replace (Preg *" reg ", const char *" subject ", const char *" \
+.BI "int preg_replace (Preg *" reg ", const char *" subject ", const char *" \
 pattern ",
-.in +21en
+.in +18en
 .BI "const char *" rep )
-.in -21en
-.BI "char*  preg_getrep  (Preg *" reg )
-.BI "size_t preg_replen  (Preg *" reg )
+.in -18en
+.BI "size_t preg_replen (const Preg *" reg )
+.BI "const char* preg_getrep (const Preg *" reg )
 .fi
 .SH DESCRIPTION
 .PP

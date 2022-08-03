@@ -5,8 +5,8 @@ preg_errmsg, preg_errcode \- libregutils error reporting functions
 .nf
 .B #include <regutils.h>
 .PP
-.BI "char* preg_errmsg  (Preg *" reg )
-.BI "int   preg_errcode (Preg *" reg )
+.BI "char* preg_errmsg  (const Preg *" reg )
+.BI "int   preg_errcode (const Preg *" reg )
 .fi
 .SH DESCRIPTION
 These functions are expected to be called after a successful termination of

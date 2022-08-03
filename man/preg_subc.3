@@ -5,8 +5,8 @@ preg_matc, preg_subc \- number of matches and parenthesized subexpressions
 .nf
 .B #include <regutils.h>
 .PP
-.BI "size_t preg_matc(Preg *" reg )
-.BI "size_t preg_subc(Preg *" reg )
+.BI "size_t preg_matc(const Preg *" reg )
+.BI "size_t preg_subc(const Preg *" reg )
 .fi
 .SH DESCRIPTION
 These functions are expected to be called after a successful termination of

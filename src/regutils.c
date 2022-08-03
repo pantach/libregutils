@@ -156,67 +156,67 @@ static void* mem_alloc(void** mem, size_t size)
 	return temp;
 }
 
-inline size_t preg_matc(Preg* rm)
+inline size_t preg_matc(const Preg* rm)
 {
 	return rm->matc;
 }
 
-inline size_t preg_subc(Preg* rm)
+inline size_t preg_subc(const Preg* rm)
 {
 	return rm->subc;
 }
 
-inline regoff_t preg_so(Preg* rm, int nmatch, int nsub)
+inline regoff_t preg_so(const Preg* rm, int nmatch, int nsub)
 {
 	return rm->offset[nmatch][nsub].rm_so;
 }
 
-inline regoff_t preg_eo(Preg* rm, int nmatch, int nsub)
+inline regoff_t preg_eo(const Preg* rm, int nmatch, int nsub)
 {
 	return rm->offset[nmatch][nsub].rm_eo;
 }
 
-inline char* preg_getmatch(Preg* rm, int nmatch, int nsub)
+inline const char* preg_getmatch(const Preg* rm, int nmatch, int nsub)
 {
 	return rm->matches.match[nmatch].sub[nsub];
 }
 
-inline size_t preg_matchlen(Preg* rm, int nmatch, int nsub)
+inline size_t preg_matchlen(const Preg* rm, int nmatch, int nsub)
 {
 	return rm->offset[nmatch][nsub].rm_eo - rm->offset[nmatch][nsub].rm_so;
 }
 
-inline char* preg_getrep(Preg* rm)
+inline const char* preg_getrep(const Preg* rm)
 {
 	return rm->rep.str;
 }
 
-inline size_t preg_replen(Preg* rm)
+inline size_t preg_replen(const Preg* rm)
 {
 	return rm->rep.len;
 }
 
-inline int preg_splitc(Preg* rm)
+inline int preg_splitc(const Preg* rm)
 {
 	return rm->splits.size;
 }
 
-inline char* preg_getsplit(Preg* rm, int nmatch)
+inline const char* preg_getsplit(const Preg* rm, int nmatch)
 {
 	return rm->splits.split[nmatch].str;
 }
 
-inline size_t preg_splitlen(Preg* rm, int nmatch)
+inline size_t preg_splitlen(const Preg* rm, int nmatch)
 {
 	return rm->splits.split[nmatch].len;
 }
 
-inline char* preg_errmsg(Preg* rm)
+inline const char* preg_errmsg(const Preg* rm)
 {
 	return rm->err.errmsg;
 }
 
-inline int preg_errcode(Preg* rm)
+inline int preg_errcode(const Preg* rm)
 {
 	return rm->err.errcode;
 }
@@ -363,12 +363,11 @@ int preg_set_external_error(Preg* rm, int err)
 int preg_set_interdtl_error(Preg* rm, int err, va_list args)
 {
 	char* errdet = va_arg(args, char*);  // Error details
-	char* errmsg;
+	const char* errmsg = preg_errmsg(rm);
 	size_t errmsg_len;
 	size_t errdet_len;
 
 	rm->err = internal_errors[ERRCODE_POS(err)];
-	errmsg  = preg_errmsg(rm);
 
 	errmsg_len = strlen(errmsg);
 	errdet_len = strlen(errdet);

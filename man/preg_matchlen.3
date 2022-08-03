@@ -5,10 +5,10 @@ preg_match, preg_getmatch, preg_matchlen \- libregutils matching functions
 .nf
 .B #include <regutils.h>
 .PP
-.BI "int    preg_match(Preg *" reg ", const char *" subject ", const char *" \
+.BI "int preg_match (Preg *" reg ", const char *" subject ", const char *" \
 pattern )
-.BI "char*  preg_getmatch(Preg *" reg ", int " nmatch ", int " nsub )
-.BI "size_t preg_matchlen(Preg *" reg ", int " nmatch ", int " nsub )
+.BI "size_t preg_matchlen (const Preg *" reg ", int " nmatch ", int " nsub )
+.BI "const char* preg_getmatch (const Preg *" reg ", int " nmatch ", int " nsub )
 .fi
 .SH DESCRIPTION
 .PP
