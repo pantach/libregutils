@@ -11,8 +11,8 @@ without warranty of any kind.
 
 Basic Installation
 ==================
-   If you downloaded this package from github run 'autoreconf -i' before
-   anything else.
+   If you downloaded or cloned the source repository from github run
+   'autoreconf -i' before anything else.
    
    Briefly, the shell command './configure && make && make install'
 should configure, build, and install this package.  The following

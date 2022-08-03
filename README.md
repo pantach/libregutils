@@ -5,9 +5,10 @@
 - Easy interface
 - Global and range searching, replacing and splitting
 - Support for backreferences in the replacement string
-- Utilizing memory pools for added performance
 - Supports basic (*BRE*) and extended (*ERE*) regular expressions
+- Utilizing memory pools for added performance
 - Complete error reporting
+- Fully documented
 - MIT license
 
 ## Quick Start
