@@ -6,11 +6,11 @@ libregutils split functions
 .nf
 .B #include <regutils.h>
 .PP
-.BI "int    preg_split    (Preg *" reg ", const char *" subject ", const char *"\
+.BI "int preg_split (Preg *" reg ", const char *" subject ", const char *"\
 pattern )
-.BI "int    preg_splitc   (Preg *" reg )
-.BI "char*  preg_getsplit (Preg *" reg ", int " nmatch )
-.BI "size_t preg_splitlen (Preg *" reg ", int " nmatch )
+.BI "int preg_splitc (const Preg *" reg )
+.BI "size_t preg_splitlen (const Preg *" reg ", int " nmatch )
+.BI "const char* preg_getsplit (const Preg *" reg ", int " nmatch )
 .fi
 .SH DESCRIPTION.PP
 .BR preg_split ()
